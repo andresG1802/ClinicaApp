@@ -59,8 +59,9 @@ const TreatmentScreen = () => {
     fetchTreatments();
   }, []);
 
-  const handleRowPress = () => {
-    navigation.navigate('TreatmentDetail');
+  const handleRowPress = (itemId) => {
+    const valueId = itemId;
+    navigation.navigate('TreatmentDetail',valueId);
   };
 
   if (loading) {
@@ -83,21 +84,15 @@ const TreatmentScreen = () => {
     <Container>
       <TableHeader>
         <TableHeaderText>ID</TableHeaderText>
-        <TableHeaderText>Emergencia ID</TableHeaderText>
         <TableHeaderText>Descripcion</TableHeaderText>
-        <TableHeaderText>Medicamentos</TableHeaderText>
-        <TableHeaderText>Instrucciones</TableHeaderText>
       </TableHeader>
       <FlatList
         data={treatments}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TableRow onPress={() => handleRowPress()}>
+          <TableRow onPress={() => handleRowPress(item)}>
             <TableRowText>{item.id}</TableRowText>
-            <TableRowText>{item.emergencia_id}</TableRowText>
             <TableRowText>{item.descripcion}</TableRowText>
-            <TableRowText>{item.medicamentos}</TableRowText>
-            <TableRowText>{item.instrucciones}</TableRowText>
           </TableRow>
         )}
       />
