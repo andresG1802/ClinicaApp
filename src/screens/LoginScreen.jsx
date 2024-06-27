@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ImageBackground, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
+import { login } from '../services/authService'; // Asegúrate de que la ruta sea correcta
 
 const Background = styled.ImageBackground`
   flex: 1;
@@ -72,15 +73,26 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setLoading(true);
-    // Aquí podrías implementar la lógica de autenticación
-    setTimeout(() => {
+    try {
+      const data =await login(dni, password);
       setLoading(false);
-      Alert.alert('Login', `Usuario: ${dni}\nContraseña: ${password}`);
-      // Si el login es exitoso, navega a la pantalla principal
-      // navigation.navigate('Home');
-    }, 2000); // Simula una espera de 2 segundos para el login
+
+      if(data)
+      {
+        const {paciente} = await data;
+        navigation.navigate('Home', {idPaciente: paciente.id});
+      }
+      else {
+        //Manejar errores de autenticación
+        Alert.alert('Error', 'Credenciales inválidas');
+      }
+      console.log(data);
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('Error', error.message || 'Hubo un problema al intentar iniciar sesión');
+    }
   };
 
   return (
@@ -99,7 +111,7 @@ const LoginScreen = () => {
           secureTextEntry
         />
         <LinkText>¿Olvidó su contraseña?</LinkText>
-        <Button onPress={() => navigation.navigate('Home')}>
+        <Button onPress={handleLogin}>
           {loading ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
@@ -108,8 +120,8 @@ const LoginScreen = () => {
         </Button>
         <BottomTextContainer>
           <BottomText>¿No tiene una cuenta? </BottomText>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <LinkText>ingrese aquí</LinkText>
+          <TouchableOpacity onPress={() => {}}>
+            <LinkText>Regístrese aquí</LinkText>
           </TouchableOpacity>
         </BottomTextContainer>
       </Overlay>
@@ -118,4 +130,5 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
+
 

@@ -38,13 +38,14 @@ const ButtonText = styled.Text`
   font-weight: bold;
 `;
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ route,navigation }) => {
+  const { idPaciente } = route.params;
   return (
     <Container>
-      <Title>Welcome to ClinicaApp</Title>
-      <Description>Manage your treatments and appointments efficiently.</Description>
-      <ButtonContainer onPress={() => navigation.navigate('Treatment')}>
-        <ButtonText>View Treatments</ButtonText>
+      <Title>Bienvenidos a ClinicaApp</Title>
+      <Description>Maneja tus tratamientos de manera digital.</Description>
+      <ButtonContainer onPress={() => navigation.navigate('Treatment',{idPaciente})}>
+        <ButtonText>Ver Tratamiento </ButtonText>
       </ButtonContainer>
     </Container>
   );

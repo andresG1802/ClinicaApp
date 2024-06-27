@@ -39,7 +39,8 @@ const TableRowText = styled.Text`
   text-align: center;
 `;
 
-const TreatmentScreen = () => {
+const TreatmentScreen = ({ route }) => {
+  const {idPaciente} = route.params;
   const navigation = useNavigation();
   const [treatments, setTreatments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +49,7 @@ const TreatmentScreen = () => {
   useEffect(() => {
     const fetchTreatments = async () => {
       try {
-        const result = await getTreatments();
+        const result = await getTreatments(idPaciente);
         setTreatments(result);
       } catch (err) {
         setError(err.message || 'An error occurred');
@@ -57,7 +58,7 @@ const TreatmentScreen = () => {
       }
     };
     fetchTreatments();
-  }, []);
+  }, [idPaciente]);
 
   const handleRowPress = (itemId) => {
     const valueId = itemId;

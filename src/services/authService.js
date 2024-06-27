@@ -1,10 +1,25 @@
-import api from './api';
 
-export const login = async (username, password) => {
+import { baseURL } from './api';
+
+export const login = async (dni, password) => {
   try {
-    const response = await api.post('/login', { username, password });
-    return response.data;
+    const response = await fetch(`${baseURL}/auth`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ dni, password })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    
+    const usuario = await response.json();
+    
+    return usuario;
   } catch (error) {
-    throw new Error(error.response.data.message);
+    throw new Error(error.message);
   }
 };
+

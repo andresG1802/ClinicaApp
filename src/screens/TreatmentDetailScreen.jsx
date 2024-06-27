@@ -49,7 +49,7 @@ const TreatmentDetailScreen = ({ route }) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.header}>
-        <Text style={styles.appTitle}>ClinicaApp</Text>
+        <Text style={styles.appTitle}>Tratamientos</Text>
       </View>
       <View style={styles.card}>
         <Text style={styles.title}>Detalles del Tratamiento</Text>
